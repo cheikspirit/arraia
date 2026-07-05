@@ -6,9 +6,15 @@ export default function Arena() {
   const [estadoJogo, setEstadoJogo] = useState(null)
 
   useEffect(() => {
-    const fetchEstado = async () => {
-      const { data } = await supabase.from('estado_do_jogo').select('*').eq('id', 1).single()
-      setEstadoJogo(data)
+const fetchEstado = async () => {
+      const { data, error } = await supabase.from('estado_do_jogo').select('*').eq('id', 1).single()
+      
+      if (error) {
+        console.error("🚨 ERRO NO SUPABASE:", error.message, error.details, error.hint)
+      } else {
+        console.log("✅ DADOS RECEBIDOS:", data)
+        setEstadoJogo(data)
+      }
     }
     fetchEstado()
 
